@@ -1,5 +1,5 @@
 from django.db import models
-
+from User.models import Bussines, User
 # Create your models here.
 
 class Pushcase(models.Model):
@@ -7,9 +7,9 @@ class Pushcase(models.Model):
 
     PushcaseNumeber = models.CharField(max_length=50)
     EnterpriceId = models.ForeignKey(Bussines, on_delete=models.CASCADE)
-    CreatedBy = models.ForeignKey(User,on_delete=models.CASCADE)
-    ModifieBy = models.ForeignKey(User,on_delete=models.CASCADE)
-    DeleteBy =  models.ForeignKey(User,on_delete=models.CASCADE)
+    CreatedBy = models.ForeignKey(User,related_name='Pushcase_CreatedBy',on_delete=models.CASCADE)
+    ModifiyBy = models.ForeignKey(User,related_name='Pushcase_ModifiyBy',on_delete=models.CASCADE)
+    DeleteBy =  models.ForeignKey(User,related_name='Pushcase_DeleteBy',on_delete=models.CASCADE)
     IsDeleted = models.BooleanField(default=True)
     CreateAt = models.DateField(auto_now=False, auto_now_add=False)
     ModifiedAt = models.DateField(auto_now=False, auto_now_add=False)
@@ -33,7 +33,7 @@ class PushcaseDetail(models.Model):
     PriceP = models.IntegerField()
     CostP = models.IntegerField()
     UnitP =  models.CharField(max_length=50)
-    PushcaseId = models.ForeignKey("Sales.Invoice", on_delete=models.CASCADE)
+    PushcaseId = models.ForeignKey(Pushcase, on_delete=models.CASCADE)
     Precentage = models.IntegerField()
     PencetagePrice = models.IntegerField()
     Total = models.IntegerField()

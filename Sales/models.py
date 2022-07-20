@@ -3,16 +3,28 @@ from User.models import Bussines
 from User.models import User
 
 # Create your models here.
+class Tax(models.Model):
+    """Model definition for Tax."""
 
+    desc=  models.CharField( max_length=50)
+    percentage = models.IntegerField()
+
+    class Meta:
+        verbose_name = "tax"
+        verbose_name_plural = "tax"
+
+    def __str__(self):
+        return self.pk+self.desc+self.percentage
+        
 class Invoice(models.Model):
     """Model definition for Invoice."""
 
     InvoiceNumber = models.CharField(max_length=50)
     EnterpriceId = models.ForeignKey(Bussines, on_delete=models.CASCADE)
-    TaxId =  models.ForeignKey("Sales.Tax", on_delete=models.CASCADE)
-    CreatedBy = models.ForeignKey(User,on_delete=models.CASCADE)
-    ModifieBy = models.ForeignKey(User,on_delete=models.CASCADE)
-    DeleteBy =  models.ForeignKey(User,on_delete=models.CASCADE)
+    TaxId =  models.ForeignKey(Tax, on_delete=models.CASCADE)
+    CreatedBy = models.ForeignKey(User,related_name='Sales_CreatedBy',on_delete=models.CASCADE)
+    ModifiyBy = models.ForeignKey(User,related_name='Sales_ModifiyBy',on_delete=models.CASCADE)
+    DeleteBy =  models.ForeignKey(User,related_name='Sales_DeleteBy',on_delete=models.CASCADE)
     IsDeleted = models.BooleanField(default=True)
     CreateAt = models.DateField(auto_now=False, auto_now_add=False)
     ModifiedAt = models.DateField(auto_now=False, auto_now_add=False)
@@ -37,7 +49,7 @@ class InvoiceDetails(models.Model):
     PriceP = models.IntegerField()
     CostP = models.IntegerField()
     UnitP =  models.CharField(max_length=50)
-    InvoiceId = models.ForeignKey("Sales.Invoice", on_delete=models.CASCADE)
+    InvoiceId = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     Precentage = models.IntegerField()
     PencetagePrice = models.IntegerField()
     Total = models.IntegerField()
@@ -52,18 +64,7 @@ class InvoiceDetails(models.Model):
     
 
 
-class Tax(models.Model):
-    """Model definition for Tax."""
 
-    desc=  models.CharField( max_length=50)
-    percentage = models.IntegerField()
-
-    class Meta:
-        verbose_name = "tax"
-        verbose_name_plural = "tax"
-
-    def __str__(self):
-        return self.pk+self.desc+self.percentage
 
     
 
