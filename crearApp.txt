@@ -1,0 +1,3 @@
+ para  crear proyecto django-admin startproject mysite
+ correr el servidor python manage.py runserver
+para crear una app python manage.py startapp user
